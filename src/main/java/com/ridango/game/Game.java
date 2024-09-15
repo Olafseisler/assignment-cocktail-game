@@ -29,6 +29,7 @@ public class Game {
     int numAttempts;
     int numLettersRevealed;
     int score;
+
     List<Integer> shownLetterIndices;
 
     public Game() {
@@ -74,8 +75,8 @@ public class Game {
             if (numAttempts == 0) {
                 System.out.println("You have run out of attempts. The correct cocktail name was: " + currentCocktail.getName());
                 System.out.println("Your score is: " + score);
-                initGameState();
-                currentCocktail = getCocktailInfoFromAPI();
+                System.out.println("Exiting game...");
+                System.exit(0);
             }
             showCocktailInfo();
             System.out.println("Attempts left: " + numAttempts);
@@ -96,8 +97,12 @@ public class Game {
                         score += numAttempts;
                         System.out.println("Congratulations! You guessed the correct cocktail name!");
                         System.out.println("Your score is: " + score);
+                        usedCocktailIDs.add(currentCocktail.getIdDrink());
                         initGameState();
-                        currentCocktail = getCocktailInfoFromAPI();
+                        var newCocktail = getCocktailInfoFromAPI();
+                        if (usedCocktailIDs.contains(newCocktail.getIdDrink())) {
+                            continue; // Skip this cocktail if it has already been used
+                        }
                     } else {
                         System.out.print("Incorrect guess. ");
                         revealRandomLetters();
@@ -191,5 +196,7 @@ public class Game {
             }
         }
     }
+
+
 
 }
