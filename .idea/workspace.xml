@@ -5,22 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ddbc7e7-e04f-416d-9616-c5491c124808" name="Changes" comment="Added more game components, refactored the project structure to be more modular and implemented tests. Added SQLite instead of H2 DB.">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ridango/game/CocktailService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ridango/game/GameUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ridango/game/HighScore.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ridango/game/HighScoreService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/ridango/CocktailServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/ridango/GameUtilsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/bin/main/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/com/ridango/game/CocktailGameApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/main/com/ridango/game/CocktailGameApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ridango/game/CocktailGameApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ridango/game/CocktailGameApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ridango/game/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ridango/game/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ridango/TestGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/ridango/GameTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,30 +31,12 @@
             <expand>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="assignment_cocktail_game" type="f1a62948:ProjectNode" />
+                <item name="assignment-cocktail-game" type="f1a62948:ProjectNode" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="assignment_cocktail_game" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="assignment_cocktail_game" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="assignment_cocktail_game" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="other" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="assignment_cocktail_game" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="verification" type="c8890929:TasksNode$1" />
+                <item name="assignment-cocktail-game" type="f1a62948:ProjectNode" />
+                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
               </path>
             </expand>
             <select />
@@ -98,10 +68,10 @@
     &quot;accountId&quot;: &quot;2c1c7f6b-4105-463c-98cb-ecd93ab2421d&quot;
   }
 }</component>
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -115,6 +85,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Gradle.Build assignment-cocktail-game.executor": "Run",
     "Gradle.Build assignment_cocktail_game.executor": "Run",
     "Gradle.GameTest.executor": "Run",
     "Gradle.GameTest.testProcessCorrectGuess.executor": "Run",
@@ -131,10 +102,11 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.CocktailGameApplication (1).executor": "Run",
     "Spring Boot.CocktailGameApplication.executor": "Run",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/olaf/Documents/Code/assignment-cocktail-game/assignment_cocktail_game",
+    "last_opened_file_path": "/Users/olaf/Downloads/assignment-cocktail-game",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -164,7 +136,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.assignment_cocktail_game [test]">
+  <component name="RunManager" selected="Spring Boot.CocktailGameApplication (1)">
     <configuration name="GameTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -237,28 +209,6 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="assignment_cocktail_game [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="build" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
     <configuration name="assignment_cocktail_game [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -281,8 +231,21 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="CocktailGameApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="assignment-cocktail-game.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ridango.game.CocktailGameApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ridango.game.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CocktailGameApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="assignment_cocktail_game.main" />
+      <module name="assignment-cocktail-game" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.ridango.game.CocktailGameApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -290,11 +253,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.CocktailGameApplication (1)" />
         <item itemvalue="Gradle.assignment_cocktail_game [test]" />
         <item itemvalue="Gradle.GameUtilsTest.testRevealRandomLetters" />
         <item itemvalue="Gradle.GameTest" />
         <item itemvalue="Gradle.GameTest.testProcessCorrectGuess" />
-        <item itemvalue="Gradle.assignment_cocktail_game [build]" />
       </list>
     </recent_temporary>
   </component>
@@ -325,6 +288,7 @@
       <workItem from="1726423054870" duration="1478000" />
       <workItem from="1726424546488" duration="29654000" />
       <workItem from="1726574766353" duration="20444000" />
+      <workItem from="1726695160437" duration="483000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit that tests the cocktail API.">
       <option name="closed" value="true" />
@@ -367,11 +331,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ridango/game/Game.java</url>
-          <line>96</line>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/ridango/GameUtilsTest.java</url>
           <line>37</line>
           <option name="timeStamp" value="20" />
@@ -380,6 +339,16 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/ridango/game/GameUtils.java</url>
           <line>16</line>
           <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ridango/game/HighScoreService.java</url>
+          <line>18</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ridango/game/Game.java</url>
+          <line>71</line>
+          <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

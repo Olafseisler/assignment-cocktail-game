@@ -35,6 +35,7 @@ public class Game {
         this.usedCocktailIDs = new HashSet<>();
         this.shownLetterIndices = new ArrayList<>();
         this.revealedHints = new ArrayList<>();
+        this.highScoreService.connectToSQLiteDB();
         initGameState();
     }
 
