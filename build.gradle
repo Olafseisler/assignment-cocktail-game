@@ -14,13 +14,15 @@ repositories {
 }
 
 dependencies {
-	runtimeOnly 'com.h2database:h2'
-	
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// Include SQLite JDBC driver
+	implementation 'org.xerial:sqlite-jdbc:3.34.0'
 	
 	implementation 'org.springframework.boot:spring-boot-starter-webflux',
-			'org.springframework.boot:spring-boot-starter-data-jpa',
+//			'org.springframework.boot:spring-boot-starter-data-jpa',
 			'org.projectlombok:lombok'
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {

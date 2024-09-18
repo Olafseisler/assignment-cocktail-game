@@ -1,142 +1,114 @@
 package com.ridango.game;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import javax.annotation.PreDestroy;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.time.ZonedDateTime;
 import java.util.*;
 
+@Component
+@Getter
+@Setter
 public class Game {
 
-    final String API_URL = "https://www.thecocktaildb.com/api/json/v1/1/";
-    WebClient client;
-    ObjectMapper objectMapper;
-    JsonParser jsonParser;
-    Cocktail currentCocktail;
-    Set<String> usedCocktailIDs;
-    Random rng;
-    Scanner scanner;
-    int numAttempts;
-    int numLettersRevealed;
-    int score;
+    private final CocktailService cocktailService;
+    private final HighScoreService highScoreService;
+    private final Random rng;
+    private final Scanner scanner;
+    private Cocktail currentCocktail;
+    private final Set<String> usedCocktailIDs;
+    private final List<Integer> shownLetterIndices;
+    private final List<Integer> revealedHints;
+    private String playerName;
+    private int numAttempts;
+    private int score;
+    private int numLettersRevealed;
 
-    List<Integer> shownLetterIndices;
 
-    public Game() {
-        try {
-            client = WebClient.create(API_URL);
-            objectMapper = new ObjectMapper();
-            usedCocktailIDs = new HashSet<>();
-            rng = new Random();
-            scanner = new Scanner(System.in);
-            shownLetterIndices = new ArrayList<>();
-            jsonParser = objectMapper.getFactory().createParser("");
-            initGameState();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void initGameState() {
-        usedCocktailIDs.clear();
-        shownLetterIndices.clear();
-        numAttempts = 5;
-        numLettersRevealed = 0;
+    public Game(CocktailService cocktailService, HighScoreService highScoreService) {
+        this.cocktailService = cocktailService;
+        this.highScoreService = highScoreService;
+        this.rng = new Random();
+        this.scanner = new Scanner(System.in);
+        this.usedCocktailIDs = new HashSet<>();
+        this.shownLetterIndices = new ArrayList<>();
+        this.revealedHints = new ArrayList<>();
+        initGameState();
     }
 
     public void start() {
         System.out.println("Welcome to the cocktail game!");
-        System.out.println("You will be presented with a cocktail recipe and you will have to guess the name of the cocktail.");
-        System.out.println("You can guess the name of the cocktail by typing the letters into the console.");
-        System.out.println("Alternatively, you can skip the round by typing 'skip' if you feel like getting a hint," + " or 'exit' if you don't wish to play anymore.");
-        System.out.println("Good luck!");
+
         try {
-            currentCocktail = getCocktailInfoFromAPI();
+            currentCocktail = cocktailService.getRandomCocktail(usedCocktailIDs);
             runGameLoop();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-    void runGameLoop() throws IOException {
+    private void runGameLoop() throws IOException {
+        showHighScores();
+        promptPlayerName();
+
         while (true) {
             if (numAttempts == 0) {
                 System.out.println("You have run out of attempts. The correct cocktail name was: " + currentCocktail.getName());
-                System.out.println("Your score is: " + score);
-                System.out.println("Exiting game...");
-                System.exit(0);
+                saveHighScoreAndExit();
             }
+
             showCocktailInfo();
-            System.out.println("Attempts left: " + numAttempts);
-            System.out.print("Please enter your guess or command: ");
-            String userInput = scanner.nextLine().toLowerCase();
-
-            switch (userInput) {
-                case "skip" -> {
-                    System.out.println("Skipping round...");
-                    revealRandomLetters();
-                }
-                case "exit" -> {
-                    System.out.println("Exiting game...");
-                    System.exit(0);
-                }
-                default -> {
-                    if (userInput.equals(currentCocktail.getName().toLowerCase())) {
-                        score += numAttempts;
-                        System.out.println("Congratulations! You guessed the correct cocktail name!");
-                        System.out.println("Your score is: " + score);
-                        usedCocktailIDs.add(currentCocktail.getIdDrink());
-                        initGameState();
-                        var newCocktail = getCocktailInfoFromAPI();
-                        if (usedCocktailIDs.contains(newCocktail.getIdDrink())) {
-                            continue; // Skip this cocktail if it has already been used
-                        }
-                    } else {
-                        System.out.print("Incorrect guess. ");
-                        revealRandomLetters();
-                        numAttempts--;
-
-                        if (numAttempts > 0) {
-                            System.out.println("Try again!");
-                        }
-                    }
-                }
-            }
+            System.out.println("Enter your guess or type 'skip' to reveal some letters or 'exit' to exit the game: ");
+            System.out.print("> ");
+            handlePlayerInput(scanner.nextLine().toLowerCase());
         }
     }
 
-    public Cocktail getCocktailInfoFromAPI() throws IOException {
-        System.out.println("Getting cocktail from API...");
+    private void showHighScores() {
+        System.out.println("High scores:");
+        highScoreService.getAllHighScores().forEach(highScore ->
+                System.out.println("Player: " + highScore.getPlayerName() + " Score: " + highScore.getScore()));
+    }
 
-        // Get random cocktail
-        var bodySpec = client.method(HttpMethod.GET).uri("random.php");
-        WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.body(BodyInserters.fromValue("data"));
-        WebClient.ResponseSpec responseSpec = headersSpec.header(HttpHeaders.CONTENT_TYPE,
-                        MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON)
-                .acceptCharset(StandardCharsets.UTF_8)
-                .ifNoneMatch("*")
-                .ifModifiedSince(ZonedDateTime.now())
-                .retrieve();
+    private void promptPlayerName() {
+        System.out.print("Please enter your name: ");
+        playerName = scanner.nextLine();
+        if (!isValidInput(playerName)) {
+            System.out.println("Invalid input. Exiting game...");
+            System.exit(0);
+        }
+    }
 
-        Mono<String> response = responseSpec.bodyToMono(String.class);
+    public void handlePlayerInput(String userInput) throws IOException {
+        switch (userInput) {
+            case "skip" -> {
+                System.out.println("Skipping round...");
+                GameUtils.revealRandomLetters(currentCocktail.getName(), shownLetterIndices, rng, GameUtils.getMaxLettersToReveal(currentCocktail.getName()), numLettersRevealed);
+            }
+            case "exit" -> saveHighScoreAndExit();
+            default -> processGuess(userInput);
+        }
+    }
 
-        JsonNode parentNode = objectMapper.readTree(response.block());
-        JsonNode drinkNode = parentNode.get("drinks").get(0);
-
-        return objectMapper.treeToValue(drinkNode, Cocktail.class);
+    private void processGuess(String guess) throws IOException {
+        if (guess.equalsIgnoreCase(currentCocktail.getName())) {
+            score += numAttempts;
+            System.out.println("Congratulations! You guessed the correct cocktail name!");
+            usedCocktailIDs.add(currentCocktail.getIdDrink());
+            shownLetterIndices.clear();
+            revealedHints.clear();
+            numAttempts = 5;
+            numLettersRevealed = 0;
+            currentCocktail = cocktailService.getRandomCocktail(usedCocktailIDs);
+        } else {
+            System.out.print("Incorrect guess. ");
+            GameUtils.revealRandomLetters(currentCocktail.getName(), shownLetterIndices, rng, GameUtils.getMaxLettersToReveal(currentCocktail.getName()), numLettersRevealed);
+            numAttempts--;
+            if (numAttempts > 0) System.out.println("Try again!");
+        }
     }
 
     public void showCocktailInfo() {
@@ -153,50 +125,35 @@ public class Game {
         System.out.println();
     }
 
-    int getMaxLettersToReveal() {
-        return Math.max(1, currentCocktail.getName().length() / 2 + 1);
-    }
-
-    void revealRandomLetters() {
-        int maxRevealed = getMaxLettersToReveal();
-        // Generate random int from 1 to 3
-        int numToReveal = rng.nextInt(3) + 1;
-        int i = 0;
-        while (i < numToReveal) {
-            if (numLettersRevealed >= maxRevealed) {
-                return;
-            }
-            int randomIndex = rng.nextInt(currentCocktail.getName().length());
-            if (!shownLetterIndices.contains(randomIndex)) {
-                shownLetterIndices.add(randomIndex);
-                numLettersRevealed++;
-            }
-            i++;
+    private void saveHighScoreAndExit() {
+        if (score > 0) {
+            highScoreService.addHighScore(playerName, score);
         }
+        System.out.println("Exiting game...");
+        System.exit(0);
     }
 
-    void revealCocktailTrivia() {
-        System.out.print("Here's some hints: ");
-        int randomIndex = rng.nextInt(3);
-        switch (randomIndex) {
-            case 0 -> {
-                if (currentCocktail.getCategory() != null) {
-                    System.out.println("Category: " + currentCocktail.getCategory());
-                }
-            }
-            case 1 -> {
-                if (currentCocktail.getInstructions() != null) {
-                    System.out.println("Instructions: " + currentCocktail.getInstructions());
-                }
-            }
-            case 2 -> {
-                if (currentCocktail.getGlass() != null) {
-                    System.out.println("Glass: " + currentCocktail.getGlass());
-                }
-            }
-        }
+    /**
+     * Check if the player name contains any SQL injection patterns
+     * @param playerName string entered by the player
+     * @return true if the input contains common SQL commands masked as player name
+     */
+    private boolean isValidInput(String playerName) {
+        String sqlInjectionPattern = "('.+--)|(--)|(%7C)|([';|])|((?i)or|and|select|insert|update|delete|drop|union|alter|truncate)";
+        return !playerName.matches(sqlInjectionPattern);
     }
 
+    public void initGameState() {
+        usedCocktailIDs.clear();
+        shownLetterIndices.clear();
+        revealedHints.clear();
+        numAttempts = 5;
+        numLettersRevealed = 0;
+        score = 0;
+    }
 
-
+    @PreDestroy
+    public void onExit() {
+        highScoreService.closeConnection();
+    }
 }

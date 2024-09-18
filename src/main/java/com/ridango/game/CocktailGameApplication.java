@@ -12,7 +12,7 @@ public class CocktailGameApplication implements CommandLineRunner {
 	}
 
 	@Override public void run(String... args)  {
-		Game game = new Game();
+		Game game = new Game(new CocktailService(), new HighScoreService());
 		game.start();
 	}
 }
